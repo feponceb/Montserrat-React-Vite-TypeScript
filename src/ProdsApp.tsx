@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { CustomHeader, SearchBar } from './sharedComponents'
 import { ProductsList } from './prodComponents'
 import { getProducts, getProductsByQuery } from './actions'
@@ -10,7 +9,6 @@ export const ProdsApp = () => {
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [allProducts, setAllProducts] = useState<ProductProps[]>([]);
     const [loading, setLoading] = useState(true);
-    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,15 +18,6 @@ export const ProdsApp = () => {
                 const productsData = data.products;
                 setProducts(productsData);
                 setAllProducts(productsData);
-                
-                // Aplicar filtro si viene del slider
-                const categoriaFiltro = location.state?.categoriaFiltro;
-                if (categoriaFiltro) {
-                    const filtered = productsData.filter(product =>
-                        product.category.toLowerCase().includes(categoriaFiltro.toLowerCase())
-                    );
-                    setProducts(filtered);
-                }
             } catch (error) {
                 console.error("Error fetching data", error);
             } finally {
@@ -37,7 +26,7 @@ export const ProdsApp = () => {
         }
         
         fetchData();
-    }, [location.state])
+    }, []) // ← Eliminé location.state de las dependencias
 
     const handleSearch = useCallback(async (query: string) => {
         query = query.trim().toLowerCase();
@@ -83,12 +72,7 @@ export const ProdsApp = () => {
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <Link to="/" className="btn btn-outline-secondary">
                     ← Volver al Inicio
-                </Link>
-                {location.state?.categoriaFiltro && (
-                    <span className="badge bg-primary fs-6">
-                        Filtrado por: {location.state.categoriaFiltro}
-                    </span>
-                )}
+                </Link>               
             </div>
 
             <CustomHeader 
