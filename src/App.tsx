@@ -1,4 +1,5 @@
-import { Header, Footer, Productos, Slider } from "./components/index"
+import { Header, Footer, Productos, Slider } from "./components"
+import { productosDestacados } from "./data/productosDestacados"
 
 export const App = () => {
     return (
@@ -6,7 +7,7 @@ export const App = () => {
             <Header/>
             <main>
                 <Slider/>
-                <Productos/>
+                <Productos productos={productosDestacados} />               
             </main>
             <Footer/>
         </>
